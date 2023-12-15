@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
+    [SerializeField] float speed;
+    private Vector2 mousePositionStart, mousePositionEnd;
+    
     Rigidbody2D rb;
     //private Vector3 position;
     //private float width;
@@ -37,54 +40,62 @@ public class PlayerMove : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        
-
-
+    {        
         if (Input.GetMouseButtonDown(0))
         {
-            Vector2 mousePosition = Input.mousePosition;
-            Debug.Log(mousePosition.x);
+            mousePositionStart = Input.mousePosition;
+            Debug.Log(mousePositionStart.x);
+            rb.velocity = Vector2.zero;
         }
         if (Input.GetMouseButtonUp(0))
         {
-            rb.velocity = Vector2.zero;
+            mousePositionEnd = Input.mousePosition;
+            Vector2 direction = mousePositionEnd - mousePositionStart;
+            if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+            {
+                direction.y = 0f;
+            }
+            else
+            {
+                direction.x = 0f;
+            }
+            rb.velocity = direction.normalized * speed;
         }
         // Handle screen touches.
-    //    if (Input.touchCount > 0)
-    //    {
-    //        Touch touch = Input.GetTouch(0);
+        //    if (Input.touchCount > 0)
+        //    {
+        //        Touch touch = Input.GetTouch(0);
 
-    //        // Move the cube if the screen has the finger moving.
-    //        if (touch.phase == TouchPhase.Moved)
-    //        {
-    //            Vector2 pos = touch.position;
-    //            pos.x = (pos.x - width) / width;
-    //            pos.y = (pos.y - height) / height;
-    //            position = new Vector2(-pos.x, pos.y);
+        //        // Move the cube if the screen has the finger moving.
+        //        if (touch.phase == TouchPhase.Moved)
+        //        {
+        //            Vector2 pos = touch.position;
+        //            pos.x = (pos.x - width) / width;
+        //            pos.y = (pos.y - height) / height;
+        //            position = new Vector2(-pos.x, pos.y);
 
-    //            // Position the cube.
-    //            transform.position = position;
-    //        }
+        //            // Position the cube.
+        //            transform.position = position;
+        //        }
 
-    //        if (Input.touchCount == 2)
-    //        {
-    //            touch = Input.GetTouch(1);
+        //        if (Input.touchCount == 2)
+        //        {
+        //            touch = Input.GetTouch(1);
 
-    //            if (touch.phase == TouchPhase.Began)
-    //            {
-    //                // Halve the size of the cube.
-    //                transform.localScale = new Vector2(0.75f, 0.75f);
-    //            }
+        //            if (touch.phase == TouchPhase.Began)
+        //            {
+        //                // Halve the size of the cube.
+        //                transform.localScale = new Vector2(0.75f, 0.75f);
+        //            }
 
-    //            if (touch.phase == TouchPhase.Ended)
-    //            {
-    //                // Restore the regular size of the cube.
-    //                transform.localScale = new Vector2(1.0f, 1.0f);
-    //            }
-    //        }
-    //    }
-    //}
+        //            if (touch.phase == TouchPhase.Ended)
+        //            {
+        //                // Restore the regular size of the cube.
+        //                transform.localScale = new Vector2(1.0f, 1.0f);
+        //            }
+        //        }
+        //    }
+        //}
     }
 
 }
